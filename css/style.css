@@ -81,35 +81,30 @@ body {
 }
 
 /* Hero Section */
-
 .hero {
-  position: relative; /* Tambahkan agar ::before mengikuti hero */
+  position: relative;
   background-image: url("../images/coffee-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: 100%;
-  height: 100vh; /* sesuaikan tinggi */
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: var(--light-text);
-  overflow: hidden; /* agar overlay tidak keluar area */
-  padding: 0 20px; /* biar teks aman di hp */
-  margin-top: 70px; /* agar tidak tertutup navbar */
+  overflow: hidden;
+  padding: 0 20px;
+  margin-top: 70px;
 }
 
 .hero::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.55); /* 0.1 = terang, 0.9 = sangat gelap */
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
   z-index: 1;
-  inset: 0; /* cara mudah menutupi full area */
 }
 
 .hero > * {
@@ -130,7 +125,6 @@ body {
   margin-bottom: 2rem;
   text-align: center;
   text-shadow: 1px 1px 3px rgba(234, 234, 234, 0.725);
-  font-display: auto;
 }
 
 .cta-button {
@@ -268,10 +262,9 @@ body {
 .cart-section {
   padding: 3rem 2rem;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 0 auto 3rem;
   background-color: #f9f9f9;
   border-radius: 10px;
-  margin-bottom: 3rem;
 }
 
 .cart-section h2 {
@@ -409,65 +402,53 @@ footer {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .hamburger {
-    display: flex;
-  }
-
-  .nav-menu {
-    position: fixed;
-    left: -100%;
-    top: 70px;
-    flex-direction: column;
-    background-color: var(--primary-color);
-    width: 100%;
-    text-align: center;
-    transition: var(--transition);
-    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-    padding: 2rem 0;
-  }
-
-  .nav-menu.active {
-    left: 0;
-  }
-
-  .hero-content h1 {
-    font-size: 2rem;
-  }
-
-  .hero-content p {
-    font-size: 1rem;
-  }
-
-  .menu-items {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-content {
-    grid-template-columns: 1fr;
-  }
-  .hero {
-    height: 100vh;
-    /* sesuaikan tinggi */
-    background-position: top;
-    /* fokus bagian atas */
-  }
-
-  .hero h1 {
-    font-size: 2rem;
-  }
-
-  .hero p {
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-  }
-  .cta-button {
-    padding: 10px 20px;
-  }
+/* TENTANG KAMI */
+.about-section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Team Section */
+.about-container {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.about-text h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: var(--dark-color);
+}
+
+.about-text p {
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.about-highlight {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.about-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.4rem;
+  box-shadow: var(--shadow);
+}
+
+.about-card h3 {
+  margin-bottom: 0.6rem;
+  color: var(--primary-color);
+}
+
+.about-card ul {
+  padding-left: 1.2rem;
+}
+
+/* Team Section (TIM RFC) */
 .team-section {
   padding: 80px 20px;
   background-color: #ffffff;
@@ -485,30 +466,57 @@ footer {
   color: #555;
 }
 
-.team-grid {
-  max-width: 1100px;
+/* Struktur vertikal dengan beberapa baris */
+.team-structure {
+  max-width: 1000px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.team-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.team-row.single .team-card {
+  flex: 1 1 100%;
+  max-width: 350px;
+}
+
+.team-row.double .team-card {
+  flex: 1 1 45%;
+  max-width: 350px;
+}
+
+.team-row.triple .team-card {
+  flex: 1 1 30%;
+  max-width: 310px;
 }
 
 .team-card {
   background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-  padding: 20px 15px 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 18px;
+  padding: 25px 20px;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-6px);
 }
 
 .team-photo {
-  width: 110px;
-  height: 110px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   overflow: hidden;
-  margin-bottom: 12px;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .team-photo img {
@@ -518,17 +526,19 @@ footer {
 }
 
 .team-role {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--secondary-color);
-  margin-bottom: 4px;
-}
-
-.team-name {
-  font-size: 1.05rem;
+  margin-top: 5px;
   font-weight: 600;
 }
 
-/* Contact Section */
+.team-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 4px;
+}
+
+/* Contact Section (dipakai untuk Kritik & Saran) */
 .contact-section {
   padding: 80px 20px;
   background-color: #f8f4ec;
@@ -597,4 +607,164 @@ footer {
 
 .contact-form textarea {
   resize: vertical;
+}
+
+/* Alert */
+.alert {
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+}
+
+.alert-success {
+  background-color: #e0f7e9;
+  color: #256d3a;
+}
+
+.alert-error {
+  background-color: #ffe5e5;
+  color: #b00020;
+}
+
+/* REVIEW Section */
+.review-section {
+  padding: 80px 20px;
+  background-color: #fff;
+}
+
+.review-section h2 {
+  text-align: center;
+  font-size: 2.1rem;
+  margin-bottom: 10px;
+}
+
+.review-subtitle {
+  max-width: 700px;
+  margin: 0 auto 40px;
+  text-align: center;
+  color: #666;
+}
+
+.review-grid {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.review-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 18px 16px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-name {
+  font-weight: 600;
+  color: var(--dark-color);
+}
+
+.review-rating {
+  font-size: 0.9rem;
+  color: #f1c40f;
+}
+
+.review-message {
+  font-style: italic;
+  color: #555;
+}
+
+.review-date {
+  font-size: 0.8rem;
+  color: #999;
+  text-align: right;
+}
+
+.no-review {
+  text-align: center;
+  color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .about-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    width: 100%;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+    padding: 2rem 0;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .menu-items {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    height: 100vh;
+    background-position: top;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-button {
+    padding: 10px 20px;
+  }
+
+  .contact-container {
+    flex-direction: column;
+  }
+
+  .team-row.triple .team-card {
+    flex: 1 1 80%;
+    max-width: 80%;
+  }
 }

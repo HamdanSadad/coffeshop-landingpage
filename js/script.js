@@ -1,3 +1,5 @@
+// js/script.js
+
 // DOM Elements
 const menuItems = document.querySelectorAll('.menu-item');
 const filterBtns = document.querySelectorAll('.filter-btn');
@@ -14,13 +16,11 @@ let cart = [];
 // Filter menu items
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-        // Remove active class from all buttons
         filterBtns.forEach(b => b.classList.remove('active'));
-        // Add active class to clicked button
         btn.classList.add('active');
-        
+
         const filter = btn.getAttribute('data-filter');
-        
+
         menuItems.forEach(item => {
             if (filter === 'all' || item.getAttribute('data-category') === filter) {
                 item.style.display = 'block';
@@ -37,7 +37,7 @@ document.addEventListener('click', (e) => {
         const id = parseInt(e.target.getAttribute('data-id'));
         const name = e.target.getAttribute('data-name');
         const price = parseInt(e.target.getAttribute('data-price'));
-        
+
         addToCart(id, name, price);
     }
 });
@@ -45,7 +45,7 @@ document.addEventListener('click', (e) => {
 // Add item to cart
 function addToCart(id, name, price) {
     const existingItem = cart.find(item => item.id === id);
-    
+
     if (existingItem) {
         existingItem.quantity += 1;
     } else {
@@ -56,7 +56,7 @@ function addToCart(id, name, price) {
             quantity: 1
         });
     }
-    
+
     updateCart();
     showNotification(`${name} ditambahkan ke keranjang`);
 }
@@ -70,10 +70,10 @@ function removeFromCart(id) {
 // Update quantity
 function updateQuantity(id, change) {
     const item = cart.find(item => item.id === id);
-    
+
     if (item) {
         item.quantity += change;
-        
+
         if (item.quantity <= 0) {
             removeFromCart(id);
         } else {
@@ -84,17 +84,19 @@ function updateQuantity(id, change) {
 
 // Update cart display
 function updateCart() {
-    // Clear cart items
     cartItems.innerHTML = '';
-    
+
     if (cart.length === 0) {
         emptyCartMessage.style.display = 'block';
         checkoutBtn.disabled = true;
+        // RESET total jika kosong
+        if (cartTotal) {
+            cartTotal.innerHTML = 'Total: Rp 0';
+        }
     } else {
         emptyCartMessage.style.display = 'none';
         checkoutBtn.disabled = false;
-        
-        // Add each item to cart display
+
         cart.forEach(item => {
             const cartItem = document.createElement('div');
             cartItem.className = 'cart-item';
@@ -112,8 +114,7 @@ function updateCart() {
             `;
             cartItems.appendChild(cartItem);
         });
-        
-        // Calculate total
+
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         cartTotal.innerHTML = `Total: Rp ${formatPrice(total)}`;
     }
@@ -126,7 +127,6 @@ function formatPrice(price) {
 
 // Show notification
 function showNotification(message) {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
@@ -142,33 +142,38 @@ function showNotification(message) {
         z-index: 1000;
         transition: all 0.3s ease;
     `;
-    
+
     document.body.appendChild(notification);
-    
-    // Remove notification after 3 seconds
+
     setTimeout(() => {
         notification.style.opacity = '0';
         setTimeout(() => {
-            document.body.removeChild(notification);
+            if (notification.parentNode) {
+                document.body.removeChild(notification);
+            }
         }, 300);
     }, 3000);
 }
 
 // Checkout functionality
-checkoutBtn.addEventListener('click', () => {
-    if (cart.length > 0) {
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const orderDetails = cart.map(item => 
-            `${item.name} (${item.quantity}x) - Rp ${formatPrice(item.price * item.quantity)}`
-        ).join('\n');
-        
-        alert(`Pesanan Anda:\n\n${orderDetails}\n\nTotal: Rp ${formatPrice(total)}\n\nTerima kasih atas pesanan Anda!`);
-        
-        // Clear cart
-        cart = [];
-        updateCart();
-    }
-});
+if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', () => {
+        if (cart.length > 0) {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const orderDetails = cart.map(item =>
+                `${item.name} (${item.quantity}x) - Rp ${formatPrice(item.price * item.quantity)}`
+            ).join('\n');
+
+            alert(
+                `Pesanan Anda:\n\n${orderDetails}\n\nTotal: Rp ${formatPrice(total)}\n\nTerima kasih atas pesanan Anda!`
+            );
+
+            // Clear cart & reset total
+            cart = [];
+            updateCart();
+        }
+    });
+}
 
 // Event delegation for cart controls
 document.addEventListener('click', (e) => {
@@ -176,12 +181,12 @@ document.addEventListener('click', (e) => {
         const id = parseInt(e.target.getAttribute('data-id'));
         updateQuantity(id, -1);
     }
-    
+
     if (e.target.classList.contains('plus')) {
         const id = parseInt(e.target.getAttribute('data-id'));
         updateQuantity(id, 1);
     }
-    
+
     if (e.target.classList.contains('remove-item')) {
         const id = parseInt(e.target.getAttribute('data-id'));
         removeFromCart(id);
@@ -189,16 +194,20 @@ document.addEventListener('click', (e) => {
 });
 
 // Mobile menu toggle
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+}
 
 // Close mobile menu when clicking on a link
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+        if (hamburger && navMenu) {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
     });
 });
 
@@ -206,10 +215,10 @@ document.querySelectorAll('.nav-link').forEach(link => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        
+
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
-        
+
         const targetElement = document.querySelector(targetId);
         if (targetElement) {
             window.scrollTo({

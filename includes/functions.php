@@ -1,6 +1,53 @@
 <?php
+// Koneksi ke database
+function get_db_connection()
+{
+    $host = 'localhost';
+    $db   = 'rfc_db';
+    $user = 'root';      // sesuaikan
+    $pass = '';          // sesuaikan
+    $charset = 'utf8mb4';
+
+    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ];
+
+    try {
+        return new PDO($dsn, $user, $pass, $options);
+    } catch (PDOException $e) {
+        die('Koneksi database gagal: ' . $e->getMessage());
+    }
+}
+
+// Simpan kritik & saran
+function save_feedback($name, $email, $message, $rating = null)
+{
+    $pdo = get_db_connection();
+    $sql = "INSERT INTO feedbacks (name, email, message, rating) 
+            VALUES (:name, :email, :message, :rating)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([
+        ':name'    => $name,
+        ':email'   => $email,
+        ':message' => $message,
+        ':rating'  => $rating !== '' ? $rating : null,
+    ]);
+}
+
+// Ambil semua feedback (untuk review)
+function get_all_feedbacks()
+{
+    $pdo = get_db_connection();
+    $sql = "SELECT * FROM feedbacks ORDER BY created_at DESC";
+    $stmt = $pdo->query($sql);
+    return $stmt->fetchAll();
+}
+
 // Fungsi untuk mendapatkan data menu
-function getMenuItems() {
+function getMenuItems()
+{
     return [
         [
             'id' => 1,
@@ -62,7 +109,8 @@ function getMenuItems() {
 }
 
 // Fungsi untuk merender item menu
-function renderMenuItem($item) {
+function renderMenuItem($item)
+{
     return "
     <div class='menu-item' data-category='{$item['category']}'>
         <div class='item-image'>
@@ -79,4 +127,3 @@ function renderMenuItem($item) {
     </div>
     ";
 }
-?>
