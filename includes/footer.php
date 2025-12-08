@@ -17,6 +17,6 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2023 Rice Field Coffee. All rights reserved.</p>
+        <p>&copy; Created by Hamdan Sadad. All rights reserved.</p>
     </div>
 </footer>
